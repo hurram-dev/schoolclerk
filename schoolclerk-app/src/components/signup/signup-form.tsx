@@ -48,7 +48,7 @@ const SignupForm = () => {
   });
 
   const { trigger, error } = useSWRMutation<{ token: string }>(
-    "/auth/signup",
+    { url: "/auth/signup", method: "POST" },
     fetcher
   );
   const router = useRouter();
@@ -56,12 +56,15 @@ const SignupForm = () => {
   console.log(getValues());
 
   const onSubmit: SubmitHandler<IFormData> = (data) => {
-    console.log(data);
     // Handle form submission
-    trigger({ body: data, method: "POST" } as any).then(async (value) => {
-      console.log(value);
-      router.push("/login");
-    });
+    trigger({ body: data } as any)
+      .then(async (value) => {
+        console.log(value);
+        router.push("/login");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -117,9 +120,9 @@ const SignupForm = () => {
         >
           Role
         </Label>
-        <select className="select" {...register('role')}>
-            <option value="teacher">Teacher</option>
-            <option value="parent">Parent</option>
+        <select className="select" {...register("role")}>
+          <option value="teacher">Teacher</option>
+          <option value="parent">Parent</option>
         </select>
 
         <p className="mt-2 text-sm text-red-600">{errors.role?.message}</p>

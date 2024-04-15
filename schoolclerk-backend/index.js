@@ -4,6 +4,7 @@ require('./src/database/mongo.database')
 const express = require('express');
 const userRouter = require("./src/routes/User.router")
 const authRouter = require('./src/routes/Auth.router')
+const classRouter = require("./src/routes/Class.router")
 const authenticateUser = require('./src/middlewares/authentication')
 const cors = require('cors');
 
@@ -24,6 +25,8 @@ app.get('/', authenticateUser, (req, res) => {
 
 app.use('/users', userRouter)
 app.use('/auth', authRouter)
+app.use('/class', classRouter)
+
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
